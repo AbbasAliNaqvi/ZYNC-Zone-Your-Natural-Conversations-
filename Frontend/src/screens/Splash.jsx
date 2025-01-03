@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { 
   Text,
   SafeAreaView,
@@ -11,10 +11,15 @@ import {
 import Title from '../common/Title';
 import img1 from "../assets/img1.jpeg";
 
-function SplashScreen() {
+function SplashScreen({navigation} ) {
+   useLayoutEffect(() => {
+        navigation.setOptions({
+            headerShown: false  
+        })
+      },[])
+
   const translateY = new Animated.Value(0);
   const duration = 5000;
-
   useEffect(() => {
     Animated.loop(
       Animated.sequence([   
@@ -41,7 +46,7 @@ function SplashScreen() {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle='light-content' />
         <Animated.View style={[styles.animatedView, { transform: [{ translateY }] }]}>
-          <Title text='ZYNC' color='white' />
+          <Title text='ZYNC' color='black' />
         </Animated.View>
       </SafeAreaView>
     </ImageBackground>
