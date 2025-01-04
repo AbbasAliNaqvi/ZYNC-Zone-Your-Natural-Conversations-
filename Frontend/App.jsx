@@ -12,12 +12,13 @@ import SignUpScreen from './src/screens/SignUp'
 import HomeScreen from './src/screens/Home'
 import SearchScreen from './src/screens/Search'
 import MessageScreen from './src/screens/Message'
+import './src/core/iconforapp'
 const Stack = createNativeStackNavigator();
 
 function App() {
 
   const[initilized] = useState(true)
-  const[authenticated] = useState(false)
+  const[authenticated] = useState(true)
 
 
   return (
