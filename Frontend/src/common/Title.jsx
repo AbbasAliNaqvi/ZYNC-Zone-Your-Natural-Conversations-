@@ -5,7 +5,7 @@ View
 function Title({text}){
 return(
     <Text style={{
-        color:'white',
+        color:'lavender',
         textAlign:'center',
         fontSize: 48,
         fontFamily: 'sans-serif',

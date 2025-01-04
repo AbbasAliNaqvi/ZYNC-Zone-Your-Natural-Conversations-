@@ -3,8 +3,9 @@ import {
   SafeAreaView,
   Text,
   StatusBar,
+  colors,
  } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer,DefaultTheme } from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import  SplashScreen from './src/screens/Splash'
 import SignInScreen from './src/screens/SignIn'
@@ -14,16 +15,22 @@ import SearchScreen from './src/screens/Search'
 import MessageScreen from './src/screens/Message'
 import './src/core/iconforapp'
 const Stack = createNativeStackNavigator();
-
+const LightTheme = {
+  ...DefaultTheme,
+  colors:{
+    ...DefaultTheme.colors,
+    background: 'white',
+  }
+}
 function App() {
 
   const[initilized] = useState(true)
-  const[authenticated] = useState(true)
+  const[authenticated] = useState(false)
 
 
   return (
 
-    <NavigationContainer>
+    <NavigationContainer theme={LightTheme}>
 
   <StatusBar barStyle='dark-content' />
 
