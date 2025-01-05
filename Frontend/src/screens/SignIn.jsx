@@ -65,11 +65,11 @@ function SignInScreen({navigation}){
          <Title text='ZYNC' color='black' />
          <Input title='Username'/>
          <Input title='Password'/>
-         <Button title='SIGN IN'/>
+         <Button title='Sign In'/>
          <Text style={{textAlign:'center', marginTop: 40}}> 
             Don't Have Any Account? <Text style={{color:'blue'}}
             onPress={()=> navigation.navigate('SignUp')}
-            >SIGN UP</Text>
+            >Sign Up</Text>
          </Text>
             </View>
         </SafeAreaView>
