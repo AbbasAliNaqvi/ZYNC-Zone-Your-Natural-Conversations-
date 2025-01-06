@@ -24,7 +24,7 @@ const LightTheme = {
 }
 function App() {
 
-  const[initilized] = useState(true)
+  const[initilized] = useState(false)
   const[authenticated] = useState(false)
 
 
