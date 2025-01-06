@@ -5,6 +5,9 @@ SafeAreaView,
 Text,
 TextInput,
 TouchableOpacity,
+TouchableWithoutFeedback,
+Keyboard,
+KeyboardAvoidingView,
 } from 'react-native';
 import Title from '../common/Title';
 
@@ -23,16 +26,16 @@ function Input({title , value , setValue , error , setError, secureTextEntry=fal
             autoCapitalize="none"
             autoComplete="off"
             style={{
-                backgroundColor:'#e1e2e4',
-                borderRadius:5,
-                borderWidth:1,
+                backgroundColor: '#e1e2e4',
+                borderRadius: 5,
+                borderWidth: 1,
                 borderColor: error ? 'red' : 'transparent',
-                height:50,
-                width:390,
-                marginLeft:10,
-                alignItems:'center',
+                height: 50,
+                width: 370,
+                marginLeft: 10,
+                justifyContent: 'center', 
+                alignItems: 'center',  
                 paddingHorizontal: 16,
-                fontSize:10,
             }
             }
             value={value}
@@ -52,18 +55,20 @@ function Button({title , onPress}){
             backgroundColor:'lavender',
             borderRadius:5,
             height:50,
-            width:390,
-            alignItems:'center',
-            marginTop: 20,
-            marginLeft:10,
+            width:350,
+            marginLeft: 20,
+            marginTop: 15,
+            justifyContent: 'center', 
+            alignItems: 'center',  
+            paddingHorizontal: 16,
             fontSize:10,
         }}
         onPress={onPress}
         ><Text style={{
             color:'white',
             fontSize:20,
-            fontWeight:10,
-            marginTop: 10,
+            fontWeight:70,
+            marginTop: 0,
         }}>
             {title}
         </Text>
@@ -127,6 +132,8 @@ function OnSignUp(){
     }
     return(
         <SafeAreaView style={{flex:1}}>
+       
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={{ flex:1 ,
                  justifyContent: 'center' ,
                 }}>
@@ -173,6 +180,7 @@ function OnSignUp(){
             >Sign In</Text>
          </Text>
             </View>
+            </TouchableWithoutFeedback> 
         </SafeAreaView>
 
 
