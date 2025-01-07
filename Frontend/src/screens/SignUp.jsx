@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
 View,
 SafeAreaView,
@@ -8,6 +8,7 @@ TouchableOpacity,
 TouchableWithoutFeedback,
 Keyboard,
 KeyboardAvoidingView,
+onPress,
 } from 'react-native';
 import Title from '../common/Title';
 
@@ -49,6 +50,7 @@ function Input({title , value , setValue , error , setError, secureTextEntry=fal
         </View>
     )
 }
+
 function Button({title , onPress}){
     return(
         <TouchableOpacity style={{
@@ -76,60 +78,72 @@ function Button({title , onPress}){
         </TouchableOpacity>
     )
 }
+
 function SignUpScreen({navigation}){
-    const [Username, SetUsername]= useState('')
-    const [Password, SetPassword]= useState('')
-    const [Firstname, SetFirstname]= useState('')
-    const [Lastname, SetLastname]= useState('')
-    const [RePassword, SetRePassword]= useState('')
+  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
 
-    const [UsernameError, SetUsernameError]= useState('')
-    const [PasswordError, SetPasswordError]= useState('')
-    const [FirstnameError, SetFirstnameError]= useState('')
-    const [LastnameError, SetLastnameError]= useState('')
-    const [RePasswordError, SetRePasswordError]= useState('')
-    useLayoutEffect(() => {
-            navigation.setOptions({
-                headerShown: false  
-            })
-          },[])
+  const [usernameError, setUsernameError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [password1Error, setPassword1Error] = useState("");
+  const [password2Error, setPassword2Error] = useState("");
+    
+  useLayoutEffect(() => {
+        navigation.setOptions({
+            headerShown: false  
+        })
+   },[])
+
 function OnSignUp(){
+
+    setUsernameError("");
+    setFirstNameError("");
+    setLastNameError("");
+    setPassword1Error("");
+    setPassword2Error("");
+
     console.log('OnSignUp', Username,Firstname,Lastname,Password,RePassword)
-    const failUsername =!Username
-    if(failUsername){
-        SetUsernameError('Username can not be empty')
-    }
-    else if(Username.length<5 ){
-        SetUsernameError('Username Must be Greater then 5 Character')
-    }
-    const failPassword =!Password
-    if(failPassword){
-        SetPasswordError('Password can not be empty')
-    }
-    const failRePassword =!RePassword
-    if(failRePassword){
-        SetRePasswordError('ReEntered Password can not be empty')
-    }
-    else if(Password!=RePassword){
-        SetRePasswordError('ReEntered Password Must be Same')
-    }
-    const failFirstname =!Firstname
-    if(failFirstname){
-        SetFirstnameError('First Name can not be empty')
-    }
-    else if (Firstname !== 'char') {
-        SetFirstnameError('First Name must be Alphabet')}
-    const failLastname =!Lastname
-    if(failLastname){
-        SetLastnameError('Last Name can not be empty')
-    }
-    else if (Lastname !== 'char') {
-        SetLastnameError('Last Name must be Alphabet')}
-    if(failUsername || failPassword || failFirstname || failLastname || failRePassword){
-        return
+      
+    let hasError = false;
+
+    // Username validation
+    if (!username || username.length < 5 || username.length > 20) {
+      setUsernameError("Username must be between 5 and 20 characters");
+      hasError = true;
     }
 
+    // First name validation
+    if (!firstName || firstName.length < 2 || firstName.length > 20) {
+      setFirstNameError("First name must be between 2 and 20 characters");
+      hasError = true;
     }
+
+    // Last name validation
+    if (!lastName || lastName.length < 2 || lastName.length > 20) {
+      setLastNameError("Last name must be between 2 and 20 characters");
+      hasError = true;
+    }
+
+    // Password validation
+    if (!password1 || password1.length < 8) {
+      setPassword1Error("Password must be at least 8 characters");
+      hasError = true;
+    }
+
+    // Password confirmation validation
+    if (password1 !== password2) {
+      setPassword2Error("Passwords do not match");
+      hasError = true;
+    }
+
+    // If any errors exist, prevent form submission
+    if (hasError) return;
+    }
+
     return(
         <SafeAreaView style={{flex:1}}>
        
@@ -141,44 +155,51 @@ function OnSignUp(){
          <Text style={{color:'black',fontSize:35,justifyContent:'center',textAlign:'center',}}>Sign Up </Text>
          <Input 
          title='Username'
-         value={Username}
-         error={UsernameError}
-        setValue={SetUsername}
-        setError={SetUsernameError}
+         value={username}
+         error={usernameError}
+        setValue={setUsername}
+        setError={setUsernameError}
          />
+
          <Input title='First name'
-           value={Firstname}
-           error={FirstnameError}
-          setValue={SetFirstname}
-          setError={SetFirstnameError}
+           value={firstName}
+           error={firstNameError}
+          setValue={setFirstName}
+          setError={setFirstNameError}
          />
+
           <Input title='Last name'
-           value={Lastname}
-           error={LastnameError}
-          setValue={SetLastname}
-          setError={SetLastnameError}
+           value={lastName}
+           error={lastNameError}
+          setValue={setLastName}
+          setError={setLastNameError}
          />
+
          <Input 
          title='Password'
-         value={Password}
-         error={PasswordError}
-         setValue={SetPassword}
-         setError={SetPasswordError}
+         value={password1}
+         error={password1Error}
+         setValue={setPassword1}
+         setError={setPassword1Error}
          secureTextEntry={true}
          />
+
          <Input title='ReEnter Password'
-          value={RePassword}
-          error={RePasswordError}
-          setValue={SetRePassword}
-          setError={SetRePasswordError}
+          value={password2}
+          error={password2Error}
+          setValue={setPassword2}
+          setError={setPassword2Error}
           secureTextEntry={true}
          />
+
          <Button title='Sign Up' onPress={OnSignUp} />
+
          <Text style={{textAlign:'center', marginTop: 40}}> 
             Do You Have Any Account? <Text style={{color:'blue'}}
             onPress={()=> navigation.navigate('SignIn')}
             >Sign In</Text>
          </Text>
+         
             </View>
             </TouchableWithoutFeedback> 
         </SafeAreaView>
@@ -187,4 +208,4 @@ function OnSignUp(){
     )
 }
 
-export default SignUpScreen
+export default SignUpScreen;

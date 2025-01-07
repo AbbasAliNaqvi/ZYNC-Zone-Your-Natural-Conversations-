@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
 View,
 SafeAreaView,
@@ -7,6 +7,7 @@ TextInput,
 TouchableOpacity,
 TouchableWithoutFeedback,
 Keyboard,
+onPress,
 } from 'react-native';
 import Title from '../common/Title';
 import { text } from '@fortawesome/fontawesome-svg-core';
@@ -79,39 +80,49 @@ function Button({title , onPress}){
 }
 
 function SignInScreen({navigation}){
-    const [username, Setusername]= useState('')
-    const [password, Setpassword]= useState('')
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
-    const [usernameError, SetusernameError]= useState('')
-    const [passwordError, SetpasswordError]= useState('')
+    const [usernameError, setUsernameError]= useState('')
+    const [passwordError, setPasswordError]= useState('')
 
     useLayoutEffect(() => {
             navigation.setOptions({
                 headerShown: false  
             })
-          },[])
-function OnSignIn(){
-            console.log('OnSignIn', username,password)
-    const failusername =!username
-    if(failusername){
-        SetusernameError('Username Not Provided')
-    }
-    const failpassword =!password
-    if(failpassword){
-        SetpasswordError('Password Not Provided')
-    }
-    if(failusername || failpassword){
-        return
-    }
-    api({
+    },[])
+
+    function OnSignIn(){
+        console.log('OnSignIn', username,password)
+
+        setUsernameError("");
+        setPasswordError("");
+
+        const failUsername = !username;
+        if (failUsername) {
+        setUsernameError("Username is not provided");
+        }
+
+    // checking the password
+        const failPassword = !password;
+        if (failPassword) {
+            setPasswordError("Password is Wrong Folk");
+        }
+    // Break out of this function if there were any error
+        if (failUsername || failPassword) {
+            return;
+        }
+    
+        console.log('OnSignIn', username,password)
+        api({
         method:'POST',
-        url: '/Chatting/signin/',
+        url: "signin/", 
         data: {
          username :username,
          password :password,
-        }
+        },
     })
-    .then(response=>{
+    .then((response)=>{
         console.log('Sign In: ',response.data)
     })
     .catch(error=>{
@@ -139,15 +150,15 @@ function OnSignIn(){
          title='Username'
          value={username}
          error={usernameError}
-        setValue={Setusername}
-        setError={SetusernameError}
+        setValue={setUsername}
+        setError={setUsernameError}
          />
          <Input 
          title='Password'
          value={password}
          error={passwordError}
-         setValue={Setpassword}
-         setError={SetpasswordError}
+         setValue={setPassword}
+         setError={setPasswordError}
          secureTextEntry={true}
          />
          <Button title='Sign In' onPress={OnSignIn}/>
@@ -164,4 +175,4 @@ function OnSignIn(){
     )
 }
 
-export default SignInScreen
+export default SignInScreen;
