@@ -12,7 +12,8 @@ onPress,
 import Title from '../common/Title';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import api from '../core/api'
-
+import utlis from '../core/utlis'
+import useGlobal from '../core/global';
 function Input({title , value , setValue , error , setError,secureTextEntry}){
     return(
         <View>
@@ -85,6 +86,8 @@ function SignInScreen({navigation}){
 
     const [usernameError, setUsernameError]= useState('')
     const [passwordError, setPasswordError]= useState('')
+   
+    const login = useGlobal(state => state.login)
 
     useLayoutEffect(() => {
             navigation.setOptions({
@@ -112,9 +115,7 @@ function SignInScreen({navigation}){
         if (failUsername || failPassword) {
             return;
         }
-    
-        console.log('OnSignIn', username,password)
-        api({
+    api({
         method:'POST',
         url: "signin/", 
         data: {
@@ -123,7 +124,9 @@ function SignInScreen({navigation}){
         },
     })
     .then((response)=>{
-        console.log('Sign In: ',response.data)
+        utlis.log('Sign In: ',response.data)
+        login(response.data)
+        
     })
     .catch(error=>{
         if (error.response) {

@@ -14,6 +14,7 @@ import HomeScreen from './src/screens/Home'
 import SearchScreen from './src/screens/Search'
 import MessageScreen from './src/screens/Message'
 import './src/core/iconforapp'
+import useGlobal from './src/core/global'
 const Stack = createNativeStackNavigator();
 const LightTheme = {
   ...DefaultTheme,
@@ -25,8 +26,7 @@ const LightTheme = {
 function App() {
 
   const[initilized] = useState(true)
-  const[authenticated] = useState(false)
-
+  const authenticated = useGlobal(state=>state.authenticated)
 
   return (
 
