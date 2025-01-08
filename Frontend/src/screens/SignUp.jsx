@@ -156,7 +156,14 @@ function SignUpScreen({ navigation }) {
         })
             .then((response) => {
                 utlis.log('Sign Up: ', response.data)
-                login(response.data)
+                const credentials = {
+                    username : username,
+                    password : password1,
+                    }
+                login(
+                    credentials,
+                    response.data.user
+                )
             })
             .catch(error => {
                 if (error.response) {

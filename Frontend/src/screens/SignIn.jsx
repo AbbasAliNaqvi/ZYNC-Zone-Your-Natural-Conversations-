@@ -124,8 +124,15 @@ function SignInScreen({navigation}){
         },
     })
     .then((response)=>{
+        const credentials = {
+        username : username,
+        password : password,
+        }
         utlis.log('Sign In: ',response.data)
-        login(response.data)
+        login(
+            credentials ,
+            response.data.user
+        )
         
     })
     .catch(error=>{
