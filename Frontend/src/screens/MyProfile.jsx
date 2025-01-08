@@ -44,6 +44,7 @@ import useGlobal from '../core/global';
     }
     
     function MyProfileScreen(){
+        const user = useGlobal(state => state.user)
         return(
             <View
             style={{
@@ -66,14 +67,14 @@ import useGlobal from '../core/global';
             fontWeight:'bold',
             marginTop:6,
             }}>
-            Abbas Ali
+            {user.name}
             </Text>
             <Text style={{
             textAlign:'center',
             color:'blue',
             fontSize:14,
             }}>
-            @Admin
+            @{user.username}
             </Text>
             <Profilelogout/>
             </View>

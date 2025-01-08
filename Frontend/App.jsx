@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { 
   SafeAreaView,
   Text,
@@ -25,9 +25,12 @@ const LightTheme = {
 }
 function App() {
 
-  const[initilized] = useState(true)
+  const initialized = useGlobal(state=>state.initialized)
   const authenticated = useGlobal(state=>state.authenticated)
-
+  const init = useGlobal(state=>state.init)
+  useEffect( ()=> {
+    init()
+  },[])
   return (
 
     <NavigationContainer theme={LightTheme}>
@@ -35,7 +38,7 @@ function App() {
   <StatusBar barStyle='dark-content' />
 
   <Stack.Navigator>
-    {!initilized ? (
+    {!initialized ? (
       <>
       <Stack.Screen name="Splash" component={SplashScreen} />
       </>
