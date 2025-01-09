@@ -9,4 +9,7 @@ server:
 	# .env/bin/activate && cd api && python manage.py runserver
 	cd api && python3 manage.py runserver 0.0.0.0:8000
 
+redis:
+	redis-server
+
 	

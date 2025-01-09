@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import secure from './secure'
 import api from './api'
-
+import utlis from './utlis'
 const useGlobal = create((set) => ({
     // initialization
     initialized: false,
@@ -21,6 +21,10 @@ const useGlobal = create((set) => ({
                     throw 'Authentication error'
                 }
                 const user = response.data.user
+                const tokens = response.data.tokens
+
+                secure.set('tokens' , tokens)
+
                 set((state) => ({
                     initialized: true,
                     authenticated: true,
@@ -40,11 +44,13 @@ const useGlobal = create((set) => ({
     authenticated: false,
     user: {},
 
-    login: (user, tokens) => {
+    login: (user, tokens, credentials) => {
         secure.set('credentials', {
             username: user.username,
             password: user.password,
+            
         });
+        secure.set('tokens' , tokens),
         set((state) => ({
             authenticated: true,
             user: user,
@@ -58,7 +64,37 @@ const useGlobal = create((set) => ({
             authenticated: false,
             user: {},
         }))
+    },
+    socket: null,
+    socketConnect: async()=>{
+    const tokens = await secure.get('tokens')
+    const url = `ws://http://192.168.1.6:8000/Chatting/?token=${tokens.access}`
+    utlis.log(url)
+    const socket = new WebSocket(url)
+    socket.onopen = () => {
+        utlis.log('socket.onopen')
     }
+    socket.onmessage = () => {
+        utlis.log('socket.onmessage')
+    }    
+    socket.onerror = () => {
+        utlis.log('socket.onerror')
+    }
+    socket.onclose = () => {
+        utlis.log('socket.onclose')
+    }
+    set((state) => ({
+        socket : socket
+    }))
+    },
+    socketClose: ()=>{
+
+    }
+
+
+
+
+
 }))
 
 export default useGlobal
