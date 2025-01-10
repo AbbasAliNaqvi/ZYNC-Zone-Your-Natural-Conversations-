@@ -65,10 +65,11 @@ const useGlobal = create((set) => ({
             user: {},
         }))
     },
+    //WEBSOCKET
     socket: null,
     socketConnect: async()=>{
     const tokens = await secure.get('tokens')
-    const url = `ws://http://192.168.1.6:8000/Chatting/?token=${tokens.access}`
+    const url = `ws://192.168.1.7:8000/Chatting/?token=${tokens.access}`
     utlis.log(url)
     const socket = new WebSocket(url)
     socket.onopen = () => {
