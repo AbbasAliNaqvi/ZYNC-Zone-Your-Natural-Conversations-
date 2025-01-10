@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import secure from './secure'
 import api from './api'
 import utlis from './utlis'
-const useGlobal = create((set) => ({
+const useGlobal = create((set,get) => ({
     // initialization
     initialized: false,
     init: async () => {
@@ -90,8 +90,16 @@ const useGlobal = create((set) => ({
     },
     socketClose: ()=>{
 
-    }
+    },
 
+    uploadThumbnail: (file)=> {
+        const socket = get().socket
+        socket.send(JSON.stringify({
+            source: 'thumbnail',
+            //base64: file.base64,
+            filename: file.fileName
+        }))
+    }
 
 
 
