@@ -8,9 +8,12 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as ImagePicker from 'expo-image-picker';
 import useGlobal from '../core/global';
+import utlis from '../core/utlis';
+import Thumbnail from '../common/Thumbnail';
 
 function ProfileImage() {
     const uploadThumbnail = useGlobal(state => state.uploadThumbnail);
+    const user = useGlobal(state => state.user);
 
     const selectImage = async () => {
         // Request media library permissions
@@ -30,6 +33,7 @@ function ProfileImage() {
         });
 
         console.log('Image Picker Result:', result);
+        
 
         // Check if user canceled the picker
         if (!result.cancelled) {
@@ -47,14 +51,10 @@ function ProfileImage() {
 
     return (
         <TouchableOpacity onPress={selectImage}>
-            <Image
-                source={require('../assets/Profilepic.png')}
-                style={{
-                    marginLeft: 10,
-                    width: 200,
-                    height: 200,
-                }}
-            />
+            <Thumbnail
+				url={user.thumbnail}
+				size={180}
+			/>
             <View
                 style={{
                     position: 'absolute',

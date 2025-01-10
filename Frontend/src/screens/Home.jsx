@@ -13,6 +13,7 @@ import RequestScreen from '../screens/Requests'
 import MyFriendsScreen from '../screens/MyFriends'
 import MyProfileScreen from '../screens/MyProfile'
 import useGlobal from '../core/global';
+import Thumbnail from '../common/Thumbnail';
 const Tab = createBottomTabNavigator()
 
 
@@ -20,6 +21,7 @@ function HomeScreen({ navigation }){
 
     const socketConnect = useGlobal(state => state.socketConnect)
     const socketClose = useGlobal(state => state.socketClose)
+    const user = useGlobal(state =>state.user)
 
 
        useLayoutEffect(() => {
@@ -38,9 +40,10 @@ function HomeScreen({ navigation }){
         <Tab.Navigator screenOptions={({ route , navigation})=> ({
             headerLeft:()=> (
                 <View>
-                    <Image source={require('../assets/Profilepic.png')}
-                    style={{marginLeft:10 , width:30, height:30}}
-                    />
+            <Thumbnail
+				url={user.thumbnail}
+				size={37}
+			/>
                 </View>
 
             ),

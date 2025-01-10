@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ADDRESS = '192.168.1.7:8000'; // Common address for all platforms
+const ADDRESS = '192.168.1.3:8000'; // Common address for all platforms
 
 const api = axios.create({
   baseURL: `http://${ADDRESS}/Chatting/`,
@@ -10,3 +10,5 @@ const api = axios.create({
 });
 
 export default api;
+
+

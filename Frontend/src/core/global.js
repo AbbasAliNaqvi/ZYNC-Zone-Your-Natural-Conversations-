@@ -2,6 +2,19 @@ import { create } from 'zustand'
 import secure from './secure'
 import api from './api'
 import utlis from './utlis'
+
+
+function responseThumbnail(set,get,data){
+ set((state)=> ({
+    user: data
+ }))
+}
+
+
+
+
+
+
 const useGlobal = create((set,get) => ({
     // initialization
     initialized: false,
@@ -69,14 +82,24 @@ const useGlobal = create((set,get) => ({
     socket: null,
     socketConnect: async()=>{
     const tokens = await secure.get('tokens')
-    const url = `ws://192.168.1.7:8000/Chatting/?token=${tokens.access}`
-    utlis.log(url)
+    const url = `ws://192.168.1.3:8000/Chatting/?token=${tokens.access}`
     const socket = new WebSocket(url)
     socket.onopen = () => {
         utlis.log('socket.onopen')
     }
-    socket.onmessage = () => {
-        utlis.log('socket.onmessage')
+    socket.onmessage = (event) => {
+        const parsed = JSON.parse(event.data)
+
+        utlis.log('onmessage: ',parsed)
+
+        const responses ={
+            'thumbnail': responseThumbnail
+        }
+        const resp = responses[parsed.source]
+        if(!resp){
+            utlis.log('parsed.source "' + parsed.source + ' "not found')
+        }
+        resp(set,get,parsed.data)
     }    
     socket.onerror = () => {
         utlis.log('socket.onerror')
@@ -96,7 +119,7 @@ const useGlobal = create((set,get) => ({
         const socket = get().socket
         socket.send(JSON.stringify({
             source: 'thumbnail',
-            //base64: file.base64,
+            base64: file.base64,
             filename: file.fileName
         }))
     }

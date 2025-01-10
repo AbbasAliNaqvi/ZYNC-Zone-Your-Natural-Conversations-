@@ -36,7 +36,7 @@ REST_FRAMEWORK = {
 }
 #Profilephoto
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_ROOT = '/media/'
+MEDIA_URL = '/media/'
 #Daphne
 ASGI_APPLICATION = 'backend.asgi.application'
 

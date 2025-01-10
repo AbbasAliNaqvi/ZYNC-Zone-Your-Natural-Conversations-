@@ -1,0 +1,11 @@
+
+Command: shopt -s histappend
+Output:
+
+Exit Code: 0
+----
+Command: pwd
+Output:
+/Users/abbasali/Desktop/ZYNC/ZYNC-Zone-Your-Natural-Conversations-
+Exit Code: 0
+----
