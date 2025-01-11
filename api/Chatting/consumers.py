@@ -3,7 +3,9 @@ import base64
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from django.core.files.base import ContentFile
-from .serializers import UserSerializer
+from .serializers import UserSerializer,SearchSerializer
+from .models import User
+from django.db.models import Q
 class ChattingConsumer(WebsocketConsumer):
 
     def connect(self):
@@ -32,12 +34,31 @@ class ChattingConsumer(WebsocketConsumer):
         data_source = data.get('source')
 
         print('receive',json.dumps(data,indent=2))
-
+#search
+        if data_source == 'search':
+            self.receive_search(data)
 #thumbnail upload here
-        if data_source == 'thumbnail':
+        elif data_source == 'thumbnail':
             self.receive_thumbnail(data)
 
-
+    def receive_search(self , data):
+        query = data.get('query')
+        users = User.objects.filter(
+            Q(username__istartswith=query) |
+            Q(first_name__istartswith=query) |
+            Q(last_name__istartswith=query) 
+        ).exclude(
+            username = self.username
+        )#.annotate(
+        #     pending_them=Exists(
+        #         Connection
+        #     )
+        #     pending_me=...
+        #     connected=...
+        # )
+#serialize
+        serialized = SearchSerializer(users,many=True)
+        self.send_group(self.username,'search', serialized.data)
     def receive_thumbnail(self,data):
         user = self.scope['user']
         image_str = data.get('base64')

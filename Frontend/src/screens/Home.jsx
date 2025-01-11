@@ -36,6 +36,10 @@ function HomeScreen({ navigation }){
             }
         },
         [])
+
+function onSearch(){
+    navigation.navigate('Search')
+}
     return(
         <Tab.Navigator screenOptions={({ route , navigation})=> ({
             headerLeft:()=> (
@@ -48,7 +52,9 @@ function HomeScreen({ navigation }){
 
             ),
             headerRight:()=> (
-                <TouchableOpacity>
+                <TouchableOpacity
+                onPress={onSearch}
+                >
                     <FontAwesomeIcon 
                     style={{ marginRight: 12}}
                     icon='magnifying-glass'

@@ -131,7 +131,8 @@ function SignInScreen({navigation}){
         utlis.log('Sign In: ',response.data)
         login(
             credentials ,
-            response.data.user
+            response.data.user,
+            response.data.tokens,
         )
         
     })

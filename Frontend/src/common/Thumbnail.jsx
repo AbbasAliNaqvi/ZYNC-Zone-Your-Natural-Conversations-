@@ -3,6 +3,7 @@ import utlis from "../core/utlis"
 
 function Thumbnail({ url, size }) {
 	return (
+	console.log(url),
 	<Image 
 		source={utlis.thumbnail(url)}
 			style={{ 

@@ -2,6 +2,14 @@ import { create } from 'zustand'
 import secure from './secure'
 import api from './api'
 import utlis from './utlis'
+import { SearchBar } from 'react-native-screens'
+
+
+function responseSearch(set, get,data){
+    set((state)=> ({
+     searchlist: data
+    })) 
+}
 
 
 function responseThumbnail(set,get,data){
@@ -9,9 +17,6 @@ function responseThumbnail(set,get,data){
     user: data
  }))
 }
-
-
-
 
 
 
@@ -93,13 +98,14 @@ const useGlobal = create((set,get) => ({
         utlis.log('onmessage: ',parsed)
 
         const responses ={
+            'search': responseSearch ,
             'thumbnail': responseThumbnail
         }
         const resp = responses[parsed.source]
         if(!resp){
             utlis.log('parsed.source "' + parsed.source + ' "not found')
         }
-        resp(set,get,parsed.data)
+        resp (set,get,parsed.data)
     }    
     socket.onerror = () => {
         utlis.log('socket.onerror')
@@ -112,7 +118,31 @@ const useGlobal = create((set,get) => ({
     }))
     },
     socketClose: ()=>{
+        const socket = get().socket
+        if(socket){
+            socket.close()
+        }
+        set((state)=>({
+            socket:null
+        })
+        )
 
+    },
+    //Search
+    searchlist:null,
+    searchUsers: (query)=> {
+        if(query){
+        const socket = get().socket
+        socket.send(JSON.stringify({
+            source: 'search',
+            query: query
+        }))
+        }else {
+        set((state)=>({
+            searchlist:null
+        })
+        )
+        }
     },
 
     uploadThumbnail: (file)=> {

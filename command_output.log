@@ -9,3 +9,13 @@ Output:
 /Users/abbasali/Desktop/ZYNC/ZYNC-Zone-Your-Natural-Conversations-
 Exit Code: 0
 ----
+Command: pwd
+Output:
+/Users/abbasali/Desktop/ZYNC/ZYNC-Zone-Your-Natural-Conversations-
+Exit Code: 0
+----
+Command: dwp
+Output:
+bash: dwp: command not found
+Exit Code: 127
+----

@@ -162,7 +162,8 @@ function SignUpScreen({ navigation }) {
                     }
                 login(
                     credentials,
-                    response.data.user
+                    response.data.user,
+                    response.data.tokens,
                 )
             })
             .catch(error => {

@@ -53,7 +53,7 @@ function ProfileImage() {
         <TouchableOpacity onPress={selectImage}>
             <Thumbnail
 				url={user.thumbnail}
-				size={180}
+				size={150}
 			/>
             <View
                 style={{
