@@ -25,13 +25,13 @@ function SearchButton({user}){
             />
         )
     }
-
+    const requestConnect = useGlobal(state => state.requestConnect)
     const data = {}
     switch(user.status){
         case 'no-connection':
             data.text='Connect'
             data.disabled = false 
-            data.onPress = ()=> {}
+            data.onPress = ()=> requestConnect(user.username)
             break
             case 'no-connection':
                 data.text='Connect'
@@ -113,13 +113,17 @@ function SearchRow({ user }) {
 }
 
 function SearchScreen(){
-    const [query,setQuery]=useState('')
+    const [query, setQuery ]=useState('')
     const searchlist = useGlobal(state => state.searchlist)
     const searchUsers = useGlobal(state => state.searchUsers)
 
-    useEffect(()=>{
-        searchUsers(query)
-    },[query])
+    useEffect(() => {
+        // Add a small delay to prevent too frequent API calls
+        const timeoutId = setTimeout(() => {
+          searchUsers(query);
+    }, 300);
+    return () => clearTimeout(timeoutId);
+}, [query]);
 
     return(
         <SafeAreaView style={{flex:1}}>

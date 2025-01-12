@@ -37,9 +37,20 @@ class ChattingConsumer(WebsocketConsumer):
 #search
         if data_source == 'search':
             self.receive_search(data)
+#sendfriendrequest
+        if data_source == 'request.connect':
+            self.receive_request_connect(data)
 #thumbnail upload here
-        elif data_source == 'thumbnail':
+        elif data_source == 'thumbnailc':
             self.receive_thumbnail(data)
+
+    def receive_request_connect (self,data):
+        username = data.get('username')
+        try:
+            receiver = User.object,get(username=username)
+        except User.DoesNotExist:
+            print('Error: User Not Found')
+            return
 
     def receive_search(self , data):
         query = data.get('query')

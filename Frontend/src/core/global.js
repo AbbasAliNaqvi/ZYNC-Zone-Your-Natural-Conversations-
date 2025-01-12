@@ -87,7 +87,7 @@ const useGlobal = create((set,get) => ({
     socket: null,
     socketConnect: async()=>{
     const tokens = await secure.get('tokens')
-    const url = `ws://192.168.1.3:8000/Chatting/?token=${tokens.access}`
+    const url = `ws://192.168.1.10:8000/Chatting/?token=${tokens.access}`
     const socket = new WebSocket(url)
     socket.onopen = () => {
         utlis.log('socket.onopen')
@@ -144,6 +144,16 @@ const useGlobal = create((set,get) => ({
         )
         }
     },
+    //RequestSend
+    requestlist:null,
+    requestConnect: (username)=> {
+        const socket = get().socket
+        socket.send(JSON.stringify({
+            source: 'requests.connect',
+            username: username
+        }))
+    },
+
 
     uploadThumbnail: (file)=> {
         const socket = get().socket
