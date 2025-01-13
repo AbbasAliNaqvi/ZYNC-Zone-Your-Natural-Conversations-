@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User , Connection
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -60,3 +60,16 @@ class SearchSerializer(UserSerializer):
 
     def get_status(self,obj ):
         return 'no-connection'
+    
+class RequestSerializer(serializers.ModelSerializer):
+    sender = UserSerializer()
+    receiver = UserSerializer()
+
+    class Meta:
+        model = Connection
+        fields = [
+            'id',
+            'sender',
+            'receiver',
+            'created'
+        ]

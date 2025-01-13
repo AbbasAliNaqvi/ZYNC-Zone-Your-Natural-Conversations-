@@ -3,8 +3,8 @@ import base64
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from django.core.files.base import ContentFile
-from .serializers import UserSerializer,SearchSerializer
-from .models import User
+from .serializers import UserSerializer,SearchSerializer,RequestSerializer
+from .models import User,Connection
 from django.db.models import Q
 class ChattingConsumer(WebsocketConsumer):
 
@@ -51,6 +51,15 @@ class ChattingConsumer(WebsocketConsumer):
         except User.DoesNotExist:
             print('Error: User Not Found')
             return
+        #for connections
+        connection, _ = Connection.objects.get_or_create( 
+            sender=self.scope['user'],
+            receiver=receiver
+        )
+
+        serialized = RequestSerializer(connection)
+        self.send_group(connection.sender.username, 'request.connect', serialized.data)
+        #send
 
     def receive_search(self , data):
         query = data.get('query')
