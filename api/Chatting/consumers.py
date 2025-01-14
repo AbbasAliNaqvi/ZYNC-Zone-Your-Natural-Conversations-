@@ -24,7 +24,7 @@ class ChattingConsumer(WebsocketConsumer):
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
-            self.username,self_channel_name
+            self.username,self.channel_name
         )
 
 #for requests
@@ -38,29 +38,35 @@ class ChattingConsumer(WebsocketConsumer):
         if data_source == 'search':
             self.receive_search(data)
 #sendfriendrequest
-        if data_source == 'request.connect':
+        elif data_source == 'request.connect':
             self.receive_request_connect(data)
 #thumbnail upload here
-        elif data_source == 'thumbnailc':
+        elif data_source == 'thumbnail':
             self.receive_thumbnail(data)
 
-    def receive_request_connect (self,data):
+    def receive_request_connect(self, data):
         username = data.get('username')
+        # Attempt to fetch the receiving user
         try:
-            receiver = User.object,get(username=username)
+            receiver = User.objects.get(username=username)
         except User.DoesNotExist:
-            print('Error: User Not Found')
+            print('Error: User not found')
             return
-        #for connections
-        connection, _ = Connection.objects.get_or_create( 
+        # Create connection
+        connection, _ = Connection.objects.get_or_create(
             sender=self.scope['user'],
             receiver=receiver
         )
-
+        # Serialized connection
         serialized = RequestSerializer(connection)
-        self.send_group(connection.sender.username, 'request.connect', serialized.data)
-        #send
-
+        # Send back to sender
+        self.send_group(
+            connection.sender.username, 'request.connect', serialized.data
+        )
+        # Send to receiver
+        self.send_group(
+            connection.receiver.username, 'request.connect', serialized.data
+        )
     def receive_search(self , data):
         query = data.get('query')
         users = User.objects.filter(

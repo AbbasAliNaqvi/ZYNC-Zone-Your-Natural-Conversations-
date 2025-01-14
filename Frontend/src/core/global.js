@@ -2,7 +2,30 @@ import { create } from 'zustand'
 import secure from './secure'
 import api from './api'
 import utlis from './utlis'
-import { SearchBar } from 'react-native-screens'
+
+
+
+
+function responserequestConnect (set, get, connection) {
+	const user = get().user
+	// If i made the connect request, 
+	if (user.username === connection.sender.username) {
+		const searchlist = [...get().searchlist]
+		const searchIndex = searchlist.findIndex(
+			request => request.username === connection.receiver.username
+		)
+		if (searchIndex >= 0) {
+			searchlist[searchIndex].status = 'pending-them'
+			set((state) => ({
+				searchlist: searchlist
+			}))
+		}
+	// If they sent the connect 
+	} else {
+		
+	}
+}
+
 
 
 function responseSearch(set, get,data){
@@ -87,7 +110,7 @@ const useGlobal = create((set,get) => ({
     socket: null,
     socketConnect: async()=>{
     const tokens = await secure.get('tokens')
-    const url = `ws://192.168.1.10:8000/Chatting/?token=${tokens.access}`
+    const url = `ws://192.168.1.6:8000/Chatting/?token=${tokens.access}`
     const socket = new WebSocket(url)
     socket.onopen = () => {
         utlis.log('socket.onopen')
@@ -98,6 +121,7 @@ const useGlobal = create((set,get) => ({
         utlis.log('onmessage: ',parsed)
 
         const responses ={
+            'request.connect': responserequestConnect,
             'search': responseSearch ,
             'thumbnail': responseThumbnail
         }

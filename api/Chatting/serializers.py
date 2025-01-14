@@ -54,8 +54,8 @@ class SearchSerializer(UserSerializer):
         fields = [
             'username',
             'name',
-             'thumbnail',
-             'status'
+            'thumbnail',
+            'status'
         ]
 
     def get_status(self,obj ):

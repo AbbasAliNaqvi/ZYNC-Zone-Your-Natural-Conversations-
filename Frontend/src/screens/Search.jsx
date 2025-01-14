@@ -31,22 +31,17 @@ function SearchButton({user}){
         case 'no-connection':
             data.text='Connect'
             data.disabled = false 
-            data.onPress = ()=> requestConnect(user.username)
+            data.onPress = () => requestConnect(user.username)
             break
-            case 'no-connection':
-                data.text='Connect'
-                data.disabled = false 
-                data.onPress = ()=> {}
-                break
             case 'pending-them':
                 data.text='Pending'
                 data.disabled = true 
-                data.onPress = ()=> {}
+                data.onPress = () => {}
                 break   
             case 'pending-me':
                 data.text='Accept '
                 data.disabled = false 
-                data.onPress = ()=> {}
+                data.onPress = () => {}
                 break    
             default: break       
     }
@@ -62,10 +57,11 @@ function SearchButton({user}){
         }}
         disabled={data.disabled}
         onPress={data.onPress}
+        
         >
         <Text
         style={{
-            color: data.disabled ? '#808080' : 'white ',
+            color: data.disabled ? '#808080' : 'white',
             fontWeight:'bold' ,
         }}
         >
@@ -73,6 +69,7 @@ function SearchButton({user}){
         </Text>
         </TouchableOpacity>
     )
+    
 }
 
 
@@ -116,13 +113,9 @@ function SearchScreen(){
     const [query, setQuery ]=useState('')
     const searchlist = useGlobal(state => state.searchlist)
     const searchUsers = useGlobal(state => state.searchUsers)
-
+    
     useEffect(() => {
-        // Add a small delay to prevent too frequent API calls
-        const timeoutId = setTimeout(() => {
-          searchUsers(query);
-    }, 300);
-    return () => clearTimeout(timeoutId);
+        searchUsers(query)
 }, [query]);
 
     return(
@@ -166,7 +159,7 @@ function SearchScreen(){
         message={'Search For Friends..'}
         centered={false}
         />            
-        ): searchlist.lenght === 0 ? (
+        ): searchlist.length === 0 ? (
         <Empty
             icon='triangle-exclamation'
             message={'No User Found for "'+ query + '"'}
